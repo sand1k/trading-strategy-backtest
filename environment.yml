@@ -1,0 +1,16 @@
+channels:
+- conda-forge
+- ml4t
+
+dependencies:
+- python=3.9
+- zipline-reloaded
+- alphalens-reloaded
+- pyfolio-reloaded
+- cvxpy
+- scikit-learn
+- matplotlib
+- boto3
+- numpy
+
+name: zipline

@@ -3,7 +3,6 @@ Infrastructure to backtest trading strategies with zipline-reloaded.
 
 ## Installation
 
-
 ```
 cp extension.py <ZIPLINE_ROOT>
 ln -s sharadar_ingest.py <ZIPLINE_ROOT>

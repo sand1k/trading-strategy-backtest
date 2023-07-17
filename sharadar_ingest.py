@@ -213,11 +213,12 @@ def gen_asset_metadata(symbols, prices, show_progress):
     if show_progress:
         log.info("Generating asset metadata.")
 
-    data = prices.index.to_frame().groupby(level=0).agg({"date": [np.min, np.max]})
-    data["start_date"] = data.date.amin
-    data["end_date"] = data.date.amax
-    del data["date"]
-    data.columns = data.columns.get_level_values(0)
+    #data = prices.index.to_frame().groupby(level=0).agg({"date": [np.min, np.max]})
+    data = prices.index.to_frame().groupby(level=0).agg(start_date=('date', 'min'), end_date=('date', 'max'))
+    #data["start_date"] = data.date.amin
+    #data["end_date"] = data.date.amax
+    #del data["date"]
+    #data.columns = data.columns.get_level_values(0)
     data["auto_close_date"] = data["end_date"].values + pd.Timedelta(days=1)
 
     data = symbols.join(data, how='inner').reset_index().set_index('sid')
@@ -256,8 +257,8 @@ def parse_splits_df(splits, symbol_map, sid_map, show_progress):
     
     gaps = splits.isin([np.nan, np.inf, -np.inf])
     if gaps.sum().any():
-        print("Nan/inf values found in splits for:")
-        print(symbol_map.loc[splits[gaps.any(axis=1)].sid.unique()])
+        log.info("Nan/inf values found in splits for:")
+        log.info(symbol_map.loc[splits[gaps.any(axis=1)].sid.unique()])
 
     return splits
 
@@ -279,8 +280,8 @@ def parse_dividends_df(dividends, symbol_map, sid_map, show_progress):
     
     gaps = dividends.isin([np.nan, np.inf, -np.inf])
     if gaps.sum().any():
-        print("Nan/inf values found in splits for:")
-        print(symbol_map.loc[dividends[gaps.any(axis=1)].sid.unique()])
+        log.info("Nan/inf values found in splits for:")
+        log.info(symbol_map.loc[dividends[gaps.any(axis=1)].sid.unique()])
     
     return dividends
         
@@ -310,7 +311,7 @@ def sharadar_to_bundle(interval='1d'):
                    .set_index('ticker')
                    .rename(columns={'permaticker': 'sid'}))
 
-        print(symbols.info(show_counts=True))
+        #print(symbols.info(show_counts=True))
         
         # Write metadata
         metadata = gen_asset_metadata(symbols, prices, show_progress)
