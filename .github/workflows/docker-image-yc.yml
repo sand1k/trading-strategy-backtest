@@ -1,0 +1,37 @@
+name: Build Docker Image YC
+
+on:
+  workflow_dispatch:
+#   push:
+#     paths:
+#       - Dockerfile
+#       - environment.yml
+#       - extension.py
+#       - run.sh
+#       - src/**
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      LATEST_TAG: sand1k/zipline-backtest-img:latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+        
+    # Runs a single command using the runners shell
+    - name: Yandex Cloud CR "Login" Action for GitHub Actions
+      uses: yc-actions/yc-cr-login@v0.1-alpha
+      with:
+        yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+        
+    - name: Build, tag, and push image to Yandex Cloud Container Registry
+      env:
+        CR_REGISTRY: crprf1l4qe3mkqil63eg
+        CR_REPO: zipline-backtest-img
+        IMAGE_TAG: latest
+      run: |
+        docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG .
+        docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
