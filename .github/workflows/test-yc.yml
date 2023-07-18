@@ -15,7 +15,7 @@ jobs:
           mode: start
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          folder-id: b1gtc0ki71jfvtnu1f7c
+          folder-id: b1gjlg0k44jithii3vbo
           image-id: fd8t8aegi1vlprds4i4h
           cores: 4
           memory: 16GB
