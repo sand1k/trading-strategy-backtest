@@ -19,6 +19,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Run tests
+    - name: Run backtest
       run: |
         docker run --rm -e AWS_SERVER_PUBLIC_KEY -e AWS_SERVER_SECRET_KEY -e NASDAQ_API_KEY ${{ env.STABLE_TAG }}
