@@ -1,4 +1,4 @@
-name: do-the-job
+name: Run backtest on YC runner
 on: workflow_dispatch
 jobs:
   start-runner:
@@ -25,9 +25,20 @@ jobs:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
     runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
+    env:
+      STABLE_TAG: sand1k/zipline-backtest-img:latest
+      AWS_SERVER_PUBLIC_KEY: ${{ secrets.AWS_SERVER_PUBLIC_KEY }}
+      AWS_SERVER_SECRET_KEY: ${{ secrets.AWS_SERVER_SECRET_KEY }}
+      NASDAQ_API_KEY: ${{ secrets.NASDAQ_API_KEY }}
     steps:
-      - name: Hello World
-        run: echo 'Hello World!'
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Run backtest
+      run: |
+        docker run --rm -e AWS_SERVER_PUBLIC_KEY -e AWS_SERVER_SECRET_KEY -e NASDAQ_API_KEY ${{ env.STABLE_TAG }}
   stop-runner:
     name: Stop self-hosted YC runner
     needs:
