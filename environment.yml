@@ -1,6 +1,6 @@
 channels:
 - conda-forge
-- ml4t
+#- ml4t
 
 dependencies:
 - python=3.9
