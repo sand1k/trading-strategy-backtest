@@ -2,8 +2,6 @@ name: Backtest CI
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: "0 13 * * 0"
 
 jobs:
   run-backtest:

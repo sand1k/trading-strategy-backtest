@@ -1,5 +1,8 @@
 name: Run backtest on YC runner
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: "0 13 * * 0"
 jobs:
   start-runner:
     name: Start self-hosted YC runner
